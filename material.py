@@ -2,72 +2,63 @@ import streamlit as st
 import math
 
 def tampilkan():
-    st.title("Perhitungan Material & Bahan")
+    st.markdown("<h2>Perhitungan Material & Bahan</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #475569; font-weight: 500; margin-bottom: 2rem;'>Evaluasi mutu material struktur Beton, Baja, dan Kayu berdasarkan Standarisasi SNI terbaru.</p>", unsafe_allow_html=True)
     
-    kategori = st.radio("Pilih Jenis Material", ["Struktur Beton (SNI 2847)", "Struktur Baja (SNI 1729)", "Struktur Kayu (SNI 7973)"])
-    st.divider()
-
+    # Pilihan Kategori Material Menggunakan Radio Button
+    kategori = st.radio("Pilih Jenis Material", ["Struktur Beton (SNI 2847)", "Struktur Baja (SNI 1729)", "Struktur Kayu (SNI 7973)"], horizontal=True)
+    
+    st.markdown("---")
+    
     if kategori == "Struktur Beton (SNI 2847)":
-        topik = st.selectbox("Pilih Perhitungan Beton", ["Modulus Elastisitas Beton", "Kuat Tekan Karakteristik"])
+        st.markdown("### Modulus Elastisitas Beton ($E_c$)")
+        st.markdown("Menghitung nilai kekakuan elastis beton berdasarkan kuat tekan silinder ($f'_c$).")
+        st.markdown("<p style='font-weight: 600; color: #0284c7;'>Rumus: $E_c = 4700 \times \sqrt{f'_c}$</p>", unsafe_allow_html=True)
         
-        if topik == "Modulus Elastisitas Beton":
-            st.subheader("Modulus Elastisitas Beton (Ec)")
-            fc = st.number_input("Kuat Tekan Beton - f'c (MPa)", min_value=0.0, value=25.0)
-            
-            if st.button("Hitung Modulus Elastisitas", type="primary", use_container_width=True):
-                ec = 4700 * math.sqrt(fc)
-                st.metric(label="Modulus Elastisitas Beton (Ec)", value=f"{ec:.2f} MPa")
-                
-        elif topik == "Kuat Tekan Karakteristik":
-            st.info("Kalkulator Kuat Tekan Karakteristik dapat ditambahkan di sini.")
+        f_c = st.number_input("Kuat Tekan Beton - f'c (MPa)", min_value=1.0, value=25.0, step=0.5)
+        
+        if st.button("Hitung Modulus Elastisitas", type="primary"):
+            ec = 4700 * math.sqrt(f_c)
+            st.markdown(f"""
+                <div class="result-box">
+                    <div style="font-size: 0.9rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">Modulus Elastisitas (Ec)</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #0284c7;">{ec:,.2f} MPa</div>
+                    <div style="font-size: 0.85rem; color: #334155; margin-top: 8px;">Berdasarkan formula SNI: 4700 × √({f_c})</div>
+                </div>
+            """, unsafe_allow_html=True)
 
     elif kategori == "Struktur Baja (SNI 1729)":
-        topik = st.selectbox("Pilih Perhitungan Baja", ["Kuat Tarik Rencana (Leleh)", "Kelangsingan Kolom"])
+        st.markdown("### Kuat Tarik Nominal Penampang Baja ($Pn$)")
+        st.markdown("Evaluasi kekuatan tarik nominal berdasarkan luas penampang efektif dan tegangan leleh.")
+        st.markdown("<p style='font-weight: 600; color: #0284c7;'>Rumus: $P_n = A_g \times F_y$</p>", unsafe_allow_html=True)
         
-        if topik == "Kuat Tarik Rencana (Leleh)":
-            st.subheader("🏗️ Kuat Tarik (Kondisi Leleh Penampang Utuh)")
-            col1, col2 = st.columns(2)
-            with col1:
-                fy = st.number_input("Tegangan Leleh - fy (MPa)", min_value=0.0, value=240.0)
-            with col2:
-                ag = st.number_input("Luas Penampang Bruto - Ag (mm²)", min_value=0.1, value=1000.0)
-            
-            if st.button("Hitung Kuat Tarik", type="primary", use_container_width=True):
-                kuat_tarik = 0.9 * fy * ag
-                st.metric(label="Kuat Tarik Rencana (ϕPn)", value=f"{kuat_tarik:.2f} N")
-                
-        elif topik == "Kelangsingan Kolom":
-            st.info("Kalkulator Kelangsingan Kolom dapat ditambahkan di sini.")
+        ag = st.number_input("Luas Penampang Bruto - Ag (mm²)", min_value=10.0, value=1200.0, step=50.0)
+        fy = st.number_input("Tegangan Leleh - Fy (MPa)", min_value=100.0, value=250.0, step=10.0)
+        
+        if st.button("Hitung Kuat Tarik", type="primary"):
+            pn = (ag * fy) / 1000.0
+            st.markdown(f"""
+                <div class="result-box">
+                    <div style="font-size: 0.9rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">Kuat Tarik Nominal (Pn)</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #0284c7;">{pn:,.2f} kN</div>
+                    <div style="font-size: 0.85rem; color: #334155; margin-top: 8px;">Formula: Pn = Ag × Fy / 1000</div>
+                </div>
+            """, unsafe_allow_html=True)
 
     elif kategori == "Struktur Kayu (SNI 7973)":
-        topik = st.selectbox("Pilih Perhitungan Kayu", ["Kadar Air (Moisture Content)", "Tegangan Desain Terkoreksi"])
+        st.markdown("### Tegangan Lentur Ijin Kayu ($\sigma_{m}$)")
+        st.markdown("Evaluasi kapasitas tegangan lentur balok kayu struktural berdasarkan SNI 7973.")
+        st.markdown("<p style='font-weight: 600; color: #0284c7;'>Rumus: $\sigma_{m} = \frac{M}{S}$</p>", unsafe_allow_html=True)
         
-        if topik == "Kadar Air (Moisture Content)":
-            st.subheader("💧 Kalkulator Kadar Air Kayu")
-            col1, col2 = st.columns(2)
-            with col1:
-                berat_awal = st.number_input("Berat Awal Kayu (gram)", value=0.0)
-            with col2:
-                berat_kering = st.number_input("Berat Kering Oven (gram)", min_value=0.1, value=1.0)
-                
-            if st.button("Hitung Kadar Air", type="primary", use_container_width=True):
-                kadar_air = ((berat_awal - berat_kering) / berat_kering) * 100
-                st.metric(label="Kadar Air (MC)", value=f"{kadar_air:.2f} %")
-                
-        elif topik == "Tegangan Desain Terkoreksi":
-            st.subheader("🪵 Kalkulator Tegangan Desain Terkoreksi")
-            st.write("Gunakan faktor koreksi yang relevan sesuai kondisi (default: 1.0).")
-            
-            fb = st.number_input("Nilai Desain Acuan - misal: Kuat Lentur Fb (MPa)", value=0.0)
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                cm = st.number_input("Faktor Layan Basah (Cm)", value=1.0)
-            with col2:
-                ct = st.number_input("Faktor Temperatur (Ct)", value=1.0)
-            with col3:
-                cf = st.number_input("Faktor Ukuran (Cf)", value=1.0)
-                
-            if st.button("Hitung Tegangan Terkoreksi", type="primary", use_container_width=True):
-                fb_aksen = fb * cm * ct * cf
-                st.metric(label="Tegangan Desain Terkoreksi (F')", value=f"{fb_aksen:.2f} MPa")
+        m_omen = st.number_input("Momen Lentur - M (N·mm)", min_value=100.0, value=1500000.0, step=10000.0)
+        s_section = st.number_input("Modulus Penampang - S (mm³)", min_value=10.0, value=1500.0, step=50.0)
+        
+        if st.button("Hitung Tegangan Lentur", type="primary"):
+            sigma_m = m_omen / s_section
+            st.markdown(f"""
+                <div class="result-box">
+                    <div style="font-size: 0.9rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">Tegangan Lentur (σm)</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #0284c7;">{sigma_m:,.2f} MPa</div>
+                    <div style="font-size: 0.85rem; color: #334155; margin-top: 8px;">Formula: σm = M / S</div>
+                </div>
+            """, unsafe_allow_html=True)

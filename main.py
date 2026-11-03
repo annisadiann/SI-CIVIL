@@ -28,65 +28,90 @@ st.markdown(
         max-width: 1200px !important;
     }}
 
-    /* Latar belakang halaman utama */
+    /* LATAR BELAKANG: Gambar latar terlihat jelas dengan overlay terang */
     .stApp {{
-        background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.85)), url("data:image/jpeg;base64,{img_b64}");
+        background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(248, 250, 252, 0.82)), url("data:image/jpeg;base64,{img_b64}");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
     }}
 
-    /* Sidebar Terang */
+    /* SIDEBAR PUTIH BERSIH */
     [data-testid="stSidebar"] {{
         background-color: #ffffff !important;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        border-right: 1px solid #cbd5e1 !important;
     }}
     
     [data-testid="stSidebarNav"] {{display: none;}}
 
-    /* Memaksa SEMUA jenis kotak input (Selectbox, Number Input, Text Input) menjadi terang */
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div,
-    div[data-testid="stNumberInput"] div[data-baseweb="input"] > div,
-    div[data-testid="stTextInput"] div[data-baseweb="input"] > div {{
+    /* KOTAK INPUT, SELECTBOX, & NUMBER INPUT PUTIH BERSIH & TEKS GELAP */
+    div[data-baseweb="select"] > div,
+    div[data-baseweb="input"] > div,
+    input, 
+    .stSelectbox div[data-baseweb="select"],
+    .stNumberInput div[data-baseweb="input"] {{
         background-color: #ffffff !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
         border: 1px solid #cbd5e1 !important;
         border-radius: 8px !important;
-        color: #0f172a !important;
     }}
     
-    /* Memaksa teks di dalam kotak input menjadi gelap (terbaca) */
-    div[data-testid="stSelectbox"] *,
-    div[data-testid="stNumberInput"] input,
-    div[data-testid="stTextInput"] input {{
+    div[data-baseweb="select"] span, 
+    div[data-baseweb="select"] div,
+    .stNumberInput input,
+    .stTextInput input {{
         color: #0f172a !important;
+        -webkit-text-fill-color: #0f172a !important;
     }}
     
-    /* Memaksa popup daftar dropdown menjadi terang */
-    div[role="listbox"] {{
+    /* Dropdown list option */
+    ul[role="listbox"] {{
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
     }}
-    div[role="listbox"] li {{
+    ul[role="listbox"] li span {{
         color: #0f172a !important;
     }}
 
-    /* Memaksa Tombol Hitung (Primary Button) agar tidak menghitam */
-    button[kind="primary"] {{
+    /* Label pilihan */
+    .stRadio label p, .stRadio label span, .stSelectbox label p, .stNumberInput label p {{
+        color: #0f172a !important;
+        font-weight: 600 !important;
+    }}
+
+    /* TOMBOL UTAMA (PRIMARY BUTTON) */
+    button[kind="primary"], div.stButton > button {{
         background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%) !important;
-        color: white !important;
+        background-color: #0284c7 !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         border: none !important;
         border-radius: 8px !important;
         font-weight: 600 !important;
     }}
-    button[kind="primary"]:hover {{
+    button[kind="primary"]:hover, div.stButton > button:hover {{
         opacity: 0.9 !important;
+        background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%) !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
     }}
 
-    /* Tipografi Halaman Depan */
+    /* MEMBUAT KOTAK PUTIH OTOMATIS PADA HASIL METRIK / ANGKA OUTPUT DI STREAMLIT */
+    div[data-testid="stMetric"], div.stAlert, .result-box {{
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        padding: 1.25rem !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    }}
+
+    /* Tipografi Utama */
     .hero-title {{
         font-size: 4rem;
         font-weight: 800;
-        color: #0f172a;
+        color: #0f172a !important;
         letter-spacing: -0.03em;
         line-height: 1.1;
         margin-bottom: 0.5rem;
@@ -98,46 +123,45 @@ st.markdown(
     }}
     .hero-subtitle {{
         font-size: 1.15rem;
-        color: #334155;
+        color: #334155 !important;
         font-weight: 500;
         max-width: 650px;
         line-height: 1.6;
         margin-bottom: 3.5rem;
     }}
 
-    /* Kartu Fitur Beranda */
+    /* Kartu Beranda */
     .card {{
-        background: rgba(255, 255, 255, 0.85);
+        background: rgba(255, 255, 255, 0.95) !important;
         border: 1px solid rgba(0, 0, 0, 0.08);
         border-radius: 16px;
         padding: 2rem;
         height: 100%;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
     }}
     .card:hover {{
         border-color: rgba(14, 165, 233, 0.4);
         transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 15px rgba(14, 165, 233, 0.15);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }}
     .card-title {{
         font-size: 1.25rem;
         font-weight: 700;
-        color: #0f172a;
+        color: #0f172a !important;
         margin-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid #e2e8f0;
         padding-bottom: 0.75rem;
     }}
     .card-text {{
         font-size: 0.95rem;
-        color: #334155;
+        color: #475569 !important;
         line-height: 1.6;
         font-weight: 500;
     }}
 
-    h1, h2, h3, p, label {{
-        color: #0f172a !important;
+    h1, h2, h3, h4, h5, h6, p, label, span {{
+        color: #0f172a;
     }}
 
     #MainMenu, header, footer {{visibility: hidden;}}
@@ -147,7 +171,7 @@ st.markdown(
 )
 
 with st.sidebar:
-    st.markdown('<div style="font-size: 0.85rem; font-weight: 700; color: #475569; letter-spacing: 0.15em; margin-bottom: 15px; margin-left: 10px;">NAVIGASI SISTEM</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size: 0.85rem; font-weight: 700; color: #0f172a; letter-spacing: 0.15em; margin-bottom: 15px; margin-left: 10px;">NAVIGASI SISTEM</div>', unsafe_allow_html=True)
     
     menu = option_menu(
         menu_title=None,
@@ -156,12 +180,12 @@ with st.sidebar:
         menu_icon="cast",
         default_index=0,
         styles={
-            "container": {"padding": "0!important", "background-color": "transparent"},
-            "icon": {"color": "#64748b", "font-size": "1.1rem"}, 
+            "container": {"padding": "0!important", "background-color": "#ffffff"},
+            "icon": {"color": "#0284c7", "font-size": "1.1rem"}, 
             "nav-link": {
                 "font-size": "0.95rem", 
                 "font-weight": "600",
-                "color": "#334155",
+                "color": "#0f172a",
                 "text-align": "left", 
                 "margin": "0px", 
                 "--hover-color": "#f1f5f9",
